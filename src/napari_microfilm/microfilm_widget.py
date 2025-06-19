@@ -415,7 +415,8 @@ class MicrofilmWidget(QWidget):
         
         rgb_image = [x.data for x in self.viewer.layers if x.visible]
         contrasts = [np.array(x.contrast_limits).tolist() for x in self.viewer.layers if x.visible]
-
+        gammas = [x.gamma for x in self.viewer.layers if x.visible]
+        print(gammas)
         cmaps = [Colormap(x.colormap.colors).to_matplotlib() for x in self.viewer.layers if x.visible]
 
         if self.viewer.dims.ndim == 3:
@@ -425,6 +426,7 @@ class MicrofilmWidget(QWidget):
                 rgb_to_plot, _, _, _ = colorify.multichannel_to_rgb(
                     rgb_to_plot,
                     cmaps=cmaps,
+                    gammas=gammas,
                     rescale_type='limits', 
                     limits=contrasts,
                     proj_type='sum')
@@ -434,6 +436,7 @@ class MicrofilmWidget(QWidget):
             rgb_sequence, _, _, _ = colorify.multichannel_to_rgb(
                 rgb_image,
                 cmaps=cmaps,
+                gammas=gammas,
                 rescale_type='limits', 
                 limits=contrasts,
                 proj_type='sum')
